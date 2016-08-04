@@ -1,0 +1,13 @@
+<%- include header %>
+ 		<form method="post" action="/post/add">
+ 			<% if(post._id){ %>
+ 				<input type="hidden" name="post[_id]" value="<%= post._id %>"/>
+ 			<% } %>	
+ 			标题:<br />
+ 			<input type="text" name="post[title]" value="<%= post.title %>" /> <br />
+ 			正文: <br />
+ 			<textarea rows="30" cols="150" name="post[content]" ><%= post.content %></textarea>
+ 			<input type="submit" id="" value="发表" />
+ 		</form>
+   </body>
+</html>

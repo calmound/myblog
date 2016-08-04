@@ -1,0 +1,11 @@
+<%- include header %>
+		<ul>
+			<% posts.forEach(function(post){ %>
+				<li>
+					<h2><a href="/post/<%= post.id %>"><%= post.title %></a></h2>
+					<div><%= post.content %></div>
+				</li>
+			<% }) %>
+		</ul>
+   </body>
+</html>

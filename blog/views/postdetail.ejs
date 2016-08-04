@@ -1,0 +1,32 @@
+<%- include header %>
+<script type="text/javascript" src="/js/postdetail.js"></script>
+		<h2><%= post.title %></h2>
+		<a href="/post/edit/<%= post._id %>">编辑</a> <a href="/post/delete/<%= post._id %>">删除</a>
+		<h3><a href="/post/user/<%= post.author._id %>"><%= post.author.name %></a></h3>
+		<div><%= post.content %></div>
+			
+		<ul class="comment-list">
+			<% comments.forEach(function(comment){ %>
+				<li>
+					姓名：  <%= comment.from.name %> <br />
+					&nbsp;评论内容:  <%= comment.content %>
+					<br />
+					<% comment.reply.forEach(function(reply){ %>
+						 <%= reply.from.name %> 回复  <%= reply.to.name %> <br />
+						&nbsp;评论内容:   <%= reply.content %> <br />
+					<% }) %>
+					<a data-cid="<%= comment._id %>" data-fid="<%= comment.from._id %>" class="ans-btn" href="#commentForm">回复</a> <br />
+				</li>
+			<% }) %>
+		</ul>
+		
+		<div>
+			<h2>评论</h2>
+			<form action="/comment/add" id="commentForm" method="post">
+				<input type="hidden" name="comment[post]" value="<%= post._id %>" />
+				<textarea name="comment[content]" rows="5" cols="70"></textarea>
+				<input type="submit" value="提交"/>
+			</form>
+		</div>
+   </body>
+</html>

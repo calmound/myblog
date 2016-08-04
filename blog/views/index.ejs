@@ -1,0 +1,14 @@
+<%- include header %>
+ 		<ul class="book-list">
+		</ul>
+		<a href="/post/add">发表文章</a>
+		<ul class="list-post">
+			<% posts.forEach(function(post) { %>
+				<li>
+					<a href="/post/<%= post._id %>"><%= post.title %></a> <br />
+					<a href="/post/user/<%= post.author._id %>"><%= post.author.name %></a>
+				</li>
+			<% }) %>
+		</ul>
+   </body>
+</html>

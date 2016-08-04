@@ -1,0 +1,31 @@
+<%- include header %>		
+		<div class="container">
+      <form class="form-signin" method="post" action="/reg">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        
+        <label for="inputUser" class="sr-only">UserName</label>
+        <input type="text" id="inputUser" class="form-control" name='user[name]'  placeholder="UserName" autofocus>
+        
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputEmail" placeholder="Password" name='user[password]'  class="form-control"  autofocus>
+        
+        <label for="inputPassword" class="sr-only">RePassword</label>
+        <input type="password" id="inputRePassword" placeholder="RePassword" name='user[repassword]'  class="form-control" autofocus>
+        
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" placeholder="Email" name='user[email]' class="form-control" autofocus>
+        
+        <label for="inputAge" class="sr-only">Age</label>
+        <input type="password" id="inputPassword" class="form-control"  name='user[age]' placeholder="Age" required>        
+        
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
+  </body>
+</html>
