@@ -1,32 +1,72 @@
 <%- include header %>
 <script type="text/javascript" src="/js/postdetail.js"></script>
-		<h2><%= post.title %></h2>
-		<a href="/post/edit/<%= post._id %>">编辑</a> <a href="/post/delete/<%= post._id %>">删除</a>
-		<h3><a href="/post/user/<%= post.author._id %>"><%= post.author.name %></a></h3>
-		<div><%= post.content %></div>
-			
-		<ul class="comment-list">
-			<% comments.forEach(function(comment){ %>
-				<li>
-					姓名：  <%= comment.from.name %> <br />
-					&nbsp;评论内容:  <%= comment.content %>
-					<br />
-					<% comment.reply.forEach(function(reply){ %>
-						 <%= reply.from.name %> 回复  <%= reply.to.name %> <br />
-						&nbsp;评论内容:   <%= reply.content %> <br />
-					<% }) %>
-					<a data-cid="<%= comment._id %>" data-fid="<%= comment.from._id %>" class="ans-btn" href="#commentForm">回复</a> <br />
-				</li>
-			<% }) %>
-		</ul>
+
+	<section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content">
+					<article id="69" class="post">
+					    <div class="post-head">
+					        <h1 class="post-title"><a href="/post/<%= post._id %>"><%= post.title %></a></h1>
+					        <h5><a href="/post/edit/<%= post._id %>">编辑</a> <a href="/post/delete/<%= post._id %>">删除</a></h5>
+					        <div class="post-meta">
+					            <span class="author">作者：<a href="/author/wangsai/"><%= post.author.name %></a></span> •
+					            <time class="post-date" datetime="2016年7月28日星期四晚上7点29分" title="2016年7月28日星期四晚上7点29分">2016年7月28日</time>
+					        </div>
+					    </div>
+					    <div class="post-content">
+					        <%- post.content %>
+					    </div>
+						<ul class="comment-list">
+							<% comments.forEach(function(comment){ %>
+								<li>
+									姓名：  <%= comment.from.name %> <br />
+									&nbsp;评论内容:  <%= comment.content %>
+									<br />
+									<% comment.reply.forEach(function(reply){ %>
+										 <%= reply.from.name %> 回复  <%= reply.to.name %> <br />
+										&nbsp;评论内容:   <%= reply.content %> <br />
+									<% }) %>
+									<a data-cid="<%= comment._id %>" data-fid="<%= comment.from._id %>" class="ans-btn" href="#commentForm">回复</a> <br />
+								</li>
+							<% }) %>
+						</ul>
 		
-		<div>
-			<h2>评论</h2>
-			<form action="/comment/add" id="commentForm" method="post">
-				<input type="hidden" name="comment[post]" value="<%= post._id %>" />
-				<textarea name="comment[content]" rows="5" cols="70"></textarea>
-				<input type="submit" value="提交"/>
-			</form>
-		</div>
+						<div>
+							<h2>评论</h2>
+							<form action="/comment/add" id="commentForm" method="post">
+								<input type="hidden" name="comment[post]" value="<%= post._id %>" />
+								<textarea name="comment[content]" rows="5" cols="70"></textarea>
+								<input type="submit" value="提交"/>
+							</form>
+						</div>
+					</article>
+                </main>
+
+		        <aside class="col-md-4 sidebar">					
+					<!-- 公告  -->
+					<div class="widget">
+						<h4 class="title">社区</h4>
+						<div class="content community">
+							<p>QQ群：462694081</p>
+							<p><a href="http://wenda.golaravel.com/" title="Laravel中文网问答社区" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])"><i class="fa fa-comments"></i> 问答社区</a></p>
+						</div>
+					</div>
+
+					<!-- 标签  -->
+					<div class="widget">
+						<h4 class="title">标签云</h4>
+						<div class="content tag-cloud">
+							<% post.tags.forEach(function(tag){ %>
+								<a href="/tag/<%= tag._id %>"><%= tag.name %></a>
+							<% }) %>
+						</div>
+					</div>
+					
+		        </aside>
+            </div>
+        </div>
+    </section>
+		
    </body>
 </html>

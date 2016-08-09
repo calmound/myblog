@@ -5,7 +5,7 @@ var PostSchema =new Schema({
 	title:String,
 	author:{type:Schema.Types.ObjectId,ref:'User'},
 	content:String,
-	tips:Array,
+	tags:[{type:Schema.Types.ObjectId,ref:'Tag'}],
 	meta:{
 		createAt:{
 			type:Date,

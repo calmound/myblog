@@ -5,6 +5,7 @@ var User = require('../controllers/users');
 var Post = require('../controllers/post');
 var Index = require('../controllers/index');
 var Comment = require('../controllers/comment');
+var Tag = require('../controllers/tag');
 
 /* GET home page. */
 router.get('/', Index.index);
@@ -45,5 +46,11 @@ router.get('/post/delete/:id',Post.delete);
 
 
 router.post('/comment/add',Comment.save);
+
+
+router.get('/tag/add',Tag.tag);
+router.post('/tag/add',Tag.save);
+router.get('/tag/:id',Tag.postList);
+
 
 module.exports = router;
