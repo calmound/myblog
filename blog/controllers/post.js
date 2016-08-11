@@ -4,8 +4,6 @@ var _ = require('underscore');
 var Promise = require('bluebird');
 var Tag = require('../models/tag');
 var markdown = require('markdown').markdown;
-var async = require('async');	
-var Array = require('node-array');
 
 exports.post = function(req,res,next){
 	res.render('postadd',{
@@ -16,65 +14,39 @@ exports.post = function(req,res,next){
 	});
 }
 
-//判断修改文章的标签是否以前就存在文章里面
-//true表明存在
-function isExist(tag,tags){
-	tags.forEach(function(tmp_tag){
-		if(tag.name == tmp_tag.name){
-			return false;
-		}
-	});
-	return true;
-}
-
-//保存文章标签
-function tagsSave(tags,post,res){
-	
-}
-
 exports.save = function(req,res,next){
 	var _post = req.body.post;
 
-	var newTagsName = _post.tag.split(',');//当前保存的文章的标签
-	var saveTags = [];
-	var postc = new Post(_post);
-	var tags = [];
-	var oPost ;
-	var id;
+	var newTagNames = _post.tag.split(',');//当前保存的文章的标签
+	var saveTags = [];//需要保存的以前没有存储过的标签
 
 	if(_post._id){//修改  
-		Post.
-		findOne({_id:_post._id})
-		.populate('tags')
+		Post.findOne({_id:_post._id}).populate('tags')
 		.exec(function(err,post){
-			var postTags = post.tags;//未修改前文章的标签
 			
 			if(err) console.log(err);
 			
-			(function delTag(count){//循环post.tags
+			(function delTag(count){//遍历文章原先的标签,找出删掉的标签，进行删除操作([a,b,c]=>[a,b],c是删掉的)
 				var tagName = post.tags[count].name;
 				
-				var flag = true;
-				for(var i = 0;i<newTagsName.length;i++){
-					if(tagName == newTagsName[i]) {
-						saveTags.push(post.tags[count]._id);//原先存在，修改后还存在的标签的ObjectId
-						
-						flag = false;
-					 	newTagsName[i] = '';
-					}
+				//判断旧标签是否存在于新标签
+				var index = newTagNames.indexOf(tagName);
+				if(index != -1){
+					saveTags.push(post.tags[count]._id);
+					newTagNames[index] = '';//不能删除，删除导致数组顺序变化造成递归出现错误,所以置空
 				}
-				
+
 				return new Promise(function(resolve,reject){
-					if(flag){//表明文章原先的标签被删除了,把该标签集合里面的文章序列删掉
+					if(index == -1){//旧标签不存在于新标签，删掉旧标签的文章id
 						
-						Tag
-						.findOne({name:tagName})
+						Tag.findOne({name:tagName})
 						.exec(function(err,tag){
 							if(err) console.log(err);
 					
-							var index2 = tag.posts.indexOf(post._id);
-							tag.posts.splice(index2,1);	
-							
+							//删除
+							var index = tag.posts.indexOf(post._id);
+							tag.posts.splice(index,1);	
+						
 							tag.save(function(err,tag){
 								if(err) console.log(err);
 								resolve();
@@ -87,31 +59,40 @@ exports.save = function(req,res,next){
 				.then(function(){
 					if(count < post.tags.length - 1) delTag(count + 1);//进入下一个
 					else{	
-						var aTags = [];
-						newTagsName.forEach(function(tag){
-							if(tag != '') aTags.push(tag);
+						var addTagNames = [];//新标签和旧标签不同的部分，就是新添加的标签
+						newTagNames.forEach(function(tag){
+							if(tag != '') addTagNames.push(tag);
 						});
-	
-						(function addTag(count){
-		
-							var tag = new Tag({name:aTags[count]}); 
-							tag.posts.push(post._id);
-		
-							tag.save(function(err,tag){
-								if(err) console.log(err);
+
+						(function addTag(count){//循环新添加部分的标签
+							//遇到删除所有标签的情况，并没有特例判断，而是让空也存进数据库中，是为了当没有标签的时候，post是没有tagId的
+							//导致前端读name出错，所以将空也插入数据库，这种会给空插入一个name
+							
+							Tag.findOne({name:addTagNames[count]},function(err,tag){//查询要新建的标签数据库中是否存在
+								if(err) console.log(err);	
 								
-								saveTags.push(tag._id);
-								
-								if(count < aTags.length - 1) addTag(count+1);
-								else{
-									post.tags = saveTags;
-									post.save(function(err,post){
-										if(err) console.log2(err);
-										
-										res.redirect('/post/' + post._id);
-									})
+								if(!tag){
+									tag = new Tag({name:addTagNames[count]}); 
 								}
-							})
+								//新建的标签已经存储到数据库中了,只用更新文章id
+								tag.posts.push(post._id);
+								
+								tag.save(function(err,tag){
+									if(err) console.log(err);
+									
+									saveTags.push(tag._id);
+									
+									if(count < addTagNames.length - 1) addTag(count+1);
+									else{
+										post.tags = saveTags;
+										post.save(function(err,post){
+											if(err) console.log2(err);
+											
+											res.redirect('/post/' + post._id);
+										});
+									}
+								});
+							});
 						})(0);
 					}
 				})
@@ -126,7 +107,7 @@ exports.save = function(req,res,next){
 			
 			(function saveTag(count){
 				
-				Tag.findOne({name:newTagsName[count]})
+				Tag.findOne({name:newTagNames[count]})
 				.exec(function(err,tmp_tag){ 
 					
 					if(err) console.log(err);
@@ -136,7 +117,7 @@ exports.save = function(req,res,next){
 						tmp_tag.posts.push(post._id);
 						_tag = tmp_tag;
 					}else{
-						_tag = new Tag({name:newTagsName[count]}); 
+						_tag = new Tag({name:newTagNames[count]}); 
 						_tag.posts.push(post._id);
 					}
 			
@@ -144,7 +125,7 @@ exports.save = function(req,res,next){
 						if(err) console.log(err);
 						post.tags.push(tag._id);
 						
-						if(count != newTagsName.length - 1) saveTag(count+1);
+						if(count != newTagNames.length - 1) saveTag(count+1);
 						else{
 							post.save(function(err,post){//保存tags
 								if(err) console.log(err);
