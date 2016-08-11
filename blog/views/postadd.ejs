@@ -14,27 +14,26 @@
 	 				<span class="">正文</span>
 	 				<textarea rows="20"  class="form-control"  style="width: 100%;" name="post[content]" ><%= post.content %></textarea>
 	 			</div>
-	 			<div class="tagsinput-primary">
-        			<input name="tagsinput-02" name="post[tag]"  class="tagsinput" data-role="tagsinput" value="School, Teacher, Colleague" style="display: none;">
-		 			<div class="input-group" style="width: 100%;">
-		 				<span class="">标签</span>
-		 				<!--<input type="text" class="form-control"/>-->
-		 				<div class="bootstrap-tagsinput">
-		 					<% post.tags.forEach(function(tag){%>
-								<span class="tag label label-info"><%= tag.name %>
-									<span data-role="remove"></span>
-								</span> 
-							<% }) %>
-							<input type="text" placeholder=""  style="width: 550px !important;">
-						</div>
-		 			</div>
-		 		</div>
+	 			<div class="tagsinput-primary post-tag">
+            		<input type="text" name="post[tag]" class="tagsinput" data-role="tagsinput" value="<%= TagToString(post.tags)  %>" style="display: none;" />
+          		</div>
 	 		
 	 			<input type="submit" class="btn btn-hg btn-primary" style="margin-top: 20px;" id="" value="发表" />
 	 			<a href="/" class="btn btn-hg btn-primary" style="margin-top: 20px;" >取消</a>
-	 			
-
 	 		</form>
+	 		
  		</div>
    </body>
+   <script>
+   
+   	$('.btn').click(function(){ 
+   		var str = $('.post-tag .tag:first').text();
+	    for(var i = 1 ;i < $('.post-tag .tag').length;i++){
+	    	str += ',' + $('.post-tag .tag:eq('+ i +')').text();
+	    }
+	    $('.tagsinput').val(str);
+	    
+	    console.log(123);
+   	});
+   </script>
 </html>
