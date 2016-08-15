@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		 <link rel="stylesheet" href="./public/libs/bootstrap/dist/css/bootstrap.min.css" />
+	    <link rel="stylesheet" type="text/css" href="./public/libs/flat-ui/dist/css/flat-ui.min.css"/>
+	    <link rel="shortcut icon" href="./public/libs/flat-ui/dist/img/favicon.ico">
+	    <script src="./public/libs/jquery/dist/jquery.min.js"></script>
+	    <script src="./public/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="./public/libs/flat-ui/dist/js/flat-ui.min.js"></script>
+	</head>
+	<body>
+		<select class="form-control select select-primary select-block mbl">
+		  <optgroup label="Profile">
+		    <option value="0">My Profile</option>
+		    <option value="1">My Friends</option>
+		  </optgroup>
+		  <optgroup label="System">
+		    <option value="2">Messages</option>
+		    <option value="3">My Settings</option>
+		    <option value="4">Logout</option>
+		  </optgroup>
+		</select>
+		
+		<select multiple="multiple" class="form-control multiselect multiselect-info">
+		  <option value="0">1</option>
+		  <option value="1" selected>2</option>
+		  <option value="2" selected>3</option>
+		  <option value="3" selected>4</option>
+		  <option value="4">5</option>
+		</select>	
+	</body>
+	<script type="text/javascript">
+		$("select").select2({dropdownCssClass: 'dropdown-inverse'});
+	</script>
+	
+</html>

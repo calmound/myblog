@@ -6,6 +6,7 @@ var PostSchema =new Schema({
 	author:{type:Schema.Types.ObjectId,ref:'User'},
 	content:String,
 	tags:[{type:Schema.Types.ObjectId,ref:'Tag'}],
+	category:{type:Number,ref:'Category'},
 	meta:{
 		createAt:{
 			type:Date,
@@ -14,17 +15,13 @@ var PostSchema =new Schema({
 		updateAt:{
 			type:Date,
 			default:Date.now()
-		},
-		date:{
-			type:String,
-			default:Date.now()
 		}
 	}
 });
 
 PostSchema.pre('save',function(next){
 	if(this.isNew){ 
-		this.meta.createAt = this.meta.updateAt = this.date = Date.now();
+		this.meta.createAt = this.meta.updateAt = Date.now();
 	}else{
 		this.meta.updateAt = Date.now();
 	}

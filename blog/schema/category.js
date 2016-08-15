@@ -3,7 +3,10 @@ var Schema = mongoose.Schema;
 
 var CategorySchema = new Schema({
 	name:{
-		type:String,
+		type:String
+	},
+	_id:{
+		type:Number,
 		unique: true
 	},
 	meta:{
@@ -30,9 +33,7 @@ CategorySchema.pre('save',function(next){
 
 CategorySchema.statics = {
 	fetch:function(cb){
-		return this
-				.find({})
-				.exec(cb);
+		return this.find({}).sort('_id').exec(cb);
 	}
 }
 

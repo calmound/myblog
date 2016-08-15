@@ -1,11 +1,40 @@
-<%- include header %>
-		<ul>
-			<% posts.forEach(function(post){ %>
-				<li>
-					<h2><a href="/post/<%= post.id %>"><%= post.title %></a></h2>
-					<div><%= post.content %></div>
-				</li>
-			<% }) %>
-		</ul>
-   </body>
-</html>
+<main class="col-md-8 main-content">
+
+	<% posts.forEach(function(post) { %>
+		<article id="69" class="post">
+		
+		    <div class="post-head">
+		        <h1 class="post-title"><a href="/post/<%= post._id %>"><%= post.title %></a></h1>
+		        <div class="post-meta">
+		            <span class="author">作者：<%= post.author.name %></span> •
+		            <time class="post-date" datetime="2016年7月28日星期四晚上7点29分" title="2016年7月28日星期四晚上7点29分">2016年7月28日</time>
+		        </div>
+		    </div>
+		    <div class="featured-media">
+		        <!--<a href="/post/laracon-laravel-5-3-recap/"><img src="http://image.golaravel.com/5/1a/d0b8c085dec30605e2c3e9e773d00.png" alt="Laracon 开发者大会快报：听 Taylor Otwell  讲解 Laravel 5.3 的新特性"></a>-->
+		    </div>
+		    <div class="post-content" style="text-overfloaw:clip;">
+		       		<%= post.content %>
+		    </div>
+		    <div class="post-permalink">
+		        <a href="/post/<%= post._id %>" class="btn btn-default">阅读全文</a>
+		    </div>
+		
+		    <footer class="post-footer clearfix">
+		        <div class="pull-left tag-list">
+		            <i class="fa fa-folder-open-o"></i>
+		            
+		        </div>
+		        <div class="pull-right share">
+		        </div>
+		    </footer>
+		</article>
+	<% }) %>
+	<nav class="pagination" role="navigation">
+		<% if(posts.length > 10) { %>
+	    	<span class="page-number">第 1 页 ⁄ 共 5 页</span>
+	    <% } %>	
+	        <a class="older-posts" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+	</nav>
+</main>
+

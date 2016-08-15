@@ -7,12 +7,13 @@ exports.index = function(req, res, next) {
 		if(err) console.log(err);
 		
 		Tag.fetch(function(err,tags){
+			if(err) console.log(err);
 			res.render('index', {
-		  	title: '主页',
-		  	user:req.session.user,
-		  	posts:posts,
-		  	tags:tags
-		})
-	  });
+			  	title: '主页',
+			  	user:req.session.user,
+			  	posts:posts,
+			  	tags:tags
+			});
+	  	});
 	});
-} 
+}  

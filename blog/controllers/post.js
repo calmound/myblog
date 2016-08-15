@@ -1,8 +1,9 @@
 var Post = require('../models/post');
+var Tag = require('../models/tag');
+var Category = require('../models/category');
 var Comment = require('../models/comment');
 var _ = require('underscore');
 var Promise = require('bluebird');
-var Tag = require('../models/tag');
 var markdown = require('markdown').markdown;
 
 exports.post = function(req,res,next){
@@ -108,7 +109,7 @@ exports.save = function(req,res,next){
 			(function saveTag(count){
 				
 				Tag.findOne({name:newTagNames[count]})
-				.exec(function(err,tmp_tag){ 
+				.exec(function(err,tmp_tag){
 					
 					if(err) console.log(err);
 					
@@ -129,7 +130,17 @@ exports.save = function(req,res,next){
 						else{
 							post.save(function(err,post){//保存tags
 								if(err) console.log(err);
-								res.redirect('/post/' + post._id);
+			
+								Category.findOne({_id:post.category},function(err,category){
+									if(err) console.log(err);
+									
+									category.posts.push(post._id);
+									category.save(function(err,category){
+										if(err) console.log(err);
+										
+										res.redirect('/post/' + post._id);
+									});
+								});
 							});
 						}
 					});

@@ -2,15 +2,13 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="stylesheet" href="/libs/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/libs/flat-ui/dist/css/flat-ui.min.css"/>
+    <link rel="shortcut icon" href="/libs/flat-ui/dist/img/favicon.ico">
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css"/>
     <script src="/libs/jquery/dist/jquery.min.js"></script>
     <script src="/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="/libs/flat-ui/dist/js/flat-ui.min.js">
-			
-		</script>
+		<script src="/libs/flat-ui/dist/js/flat-ui.min.js"></script>
   </head>
   <body>
   	<body>
@@ -24,17 +22,17 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">首页</a></li>
-            <li><a href="#about">绘画</a></li>
-            <li><a href="#contact">程序</a></li>
-            <li><a href="#contact">随笔</a></li>
-            <li><a href="#contact">其他</a></li>
-            <li class="dropdown">
+            <li><a href="/">首页</a></li>
+    	      <li><a href="/category/0">编程</a></li>
+          	<li><a href="/category/1">随笔</a></li>
+            <li><a href="/category/2">绘画</a></li>
+            <li><a href="/category/4">其他</a></li>
+            <!--<li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="#">Action</a></li>
               </ul>
-            </li>
+            </li>-->
           </ul>
           <ul class="nav navbar-nav navbar-right">
       			<% if(user) { %>

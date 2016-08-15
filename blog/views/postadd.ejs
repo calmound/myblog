@@ -14,11 +14,23 @@
 	 				<span class="">正文</span>
 	 				<textarea rows="20"  class="form-control"  style="width: 100%;" name="post[content]" ><%= post.content %></textarea>
 	 			</div>
-	 			<div class="tagsinput-primary post-tag">
-            		<input type="text" name="post[tag]" class="tagsinput" data-role="tagsinput" value="<%= TagToString(post.tags)  %>" style="display: none;" />
+	 			<div class=" tagsinput-primary post-tag">
+	 				<span class="">标签</span>
+            		<input type="text" name="post[tag]" class="tagsinput form-control" data-role="tagsinput" value="<%= TagToString(post.tags)  %>" style="display: none;" />
           		</div>
-	 		
-	 			<input type="submit" class="btn btn-hg btn-primary" style="margin-top: 20px;" id="" value="发表" />
+				
+				<span class="">分类</span>
+				<div>
+				    <select data-toggle="select" class="form-control select select-success mrs mbm" name="post[category]">
+			          <option value="0">编程</option>
+			          <option value="2">随笔</option>
+			          <option value="3">金融</option>
+			          <option value="1">绘画</option>
+			          <option value="4">其他</option>
+			       </select>
+				</div>
+	
+	 			<input type="submit" class="btn btn-hg btn-primary" style="margin-top: 20px;" value="发表" />
 	 			<a href="/" class="btn btn-hg btn-primary" style="margin-top: 20px;" >取消</a>
 	 		</form>
 	 		
@@ -35,5 +47,9 @@
 	    
 	    console.log(123);
    	});
+   	
+   		
+	$("select").select2({dropdownCssClass: 'dropdown-inverse'});
+	
    </script>
 </html>
